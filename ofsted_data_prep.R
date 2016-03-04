@@ -51,12 +51,12 @@ myofsted$instype <- mapvalues(myofsted$instype,
                                         rep("Foundation", 2),
                                         rep("Academy", 3),
                                         rep("Other", 5),
-                                        "Voluntary Aided",
-                                        "Voluntary Controlled")
+                                        "Voluntary",
+                                        "Voluntary")
                                  )
 
 myofsted$ofstedgrade <- factor(myofsted$ofstedgrade, levels = c(1,2,3,4), labels = c("Outstanding", "Good", "Requires Improvement", "Inadequate"))
 
-# Load in the first 26 columns of the KS4 dataset
-ks4 <- read.xlsx(xlsxFile = "england_ks4.xlsx", sheet = 1, colNames = TRUE, startRow = 2, cols = c(3,4,5,16,17,18,19,27,96))
+# Load in selected columns of the KS4 dataset
+ks4 <- openxlsx::read.xlsx(xlsxFile = "england_ks4.xlsx", sheet = 1, colNames = TRUE, startRow = 2, cols = c(3,4,5,16,17,18,19,27,96))
 
