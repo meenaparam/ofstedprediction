@@ -1,0 +1,10 @@
+---
+title: "Features"
+author: "Meenakshi Parameshwaran"
+date: "4 March 2016"
+output: html_document
+---
+
+## Features description
+
+This R-Markdown file will describe the variables used in the predictive model.

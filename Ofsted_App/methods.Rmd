@@ -1,0 +1,30 @@
+---
+title: "Methods"
+author: "Meenakshi Parameshwaran"
+date: "4 March 2016"
+output: html_document
+---
+
+
+## Methods
+
+Two datasets were used in this shiny app. Both come from the UK Department of Education's statistics page.
+
+- Ofsted dataset comes from the maintained schools statisics release September 2014 to Aug 2015: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/483703/School_inspection_data_provisional_2.xlsx
+- KS4 performance dataset comes from the 2015 school and college performance tables : http://www.education.gov.uk/schools/performance/download/xls/england_ks4.zip
+
+
+The `caret` package was used to fit the machine learning algorithms.
+
+The school dataset was split into training (70%) and testing (30%) datasets. All models were fit using the same training parameters and the same random seeds. Defaults were used except that models were tuned using 5-fold (rather than 10-fold) cross-valiation without repeat. Parallel computation was employed using the `parallel` and `doParallel` packages.
+
+The specific algorithms:
+
+- Recursive Partitioning using the `rpart` method
+- SVM Radial Basis Function Kernal using the `svmRadial` method
+- Linear Discriminant Analsysis using the `lda` method
+- Naive Bayes was fit using the `naiveBayes` method
+
+For more information on these methods, see the [`caret` package's GitHub page](http://topepo.github.io/caret/index.html)
+
+You can find out more about building applications with Shiny here: http://shiny.rstudio.com
