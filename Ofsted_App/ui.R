@@ -14,64 +14,68 @@ shinyUI(navbarPage("",
             # Application title
             titlePanel("Predicting Ofsted grades"),
                             
-                    # Sidebar with controls for algorithm selection and values
-                    sidebarLayout(
-                    sidebarPanel(
+                    # Fluidpage with controls for algorithm selection and values
+                    fluidPage(
                         
+                        #plotOutput(),
+                        h4("Plot to follow here"),
                         
-                        selectInput(inputId = "algorithm", 
-                                    label = "Which classification algorithm?", 
-                                    choices = c("Classification Tree", 
-                                                "SVM Radial Kernal",
-                                                "Linear Discriminant Analysis", 
-                                                "Naive Bayes")),
+                        hr(),
                         
-                        
-                        selectInput(inputId = "region", 
-                                    label = "Where is the school?", 
-                                    choices = c("East Midlands", "East of England",
-                                                "London", "North East", "North West",
-                                                "South East", "South West",
-                                                "West Midlands", 
-                                                "Yorkshire and the Humber")),
-                        
-                        selectInput(inputId = "schooltype", 
-                                    label = "What type is it?", 
-                                    choices = c("Academy", "Community", "Foundation",
-                                                "Voluntary", "Other")),
-
-                        sliderInput(inputId = "schoolsize",
-                                    label = "How many pupils are there?",
-                                    min = 50, max = 1250, value = 500, step = 100),
-                        
-                        radioButtons(inputId = "singlesex", 
-                                     label = "What is the gender composition?",
-                                     choices = list("Mixed" = 1, "Single sex" = 2),
-                                     selected = 1),
-                    
-                        numericInput(inputId = "ks2aps",
-                                 label = "What is the KS2 APS?", 
-                                 min = 0, max = 40, value = 27),
-                        
-                        submitButton("Submit")),
-                    
-                                
-                    # Display KNN results
-                                mainPanel(h1("main panel"))
-                                    
-
-                            
-                   )), 
-            
-        # Confusion matrix tab title               
-            tabPanel("Confusion Matrix",
-                     fluidRow(
-                         column(10,
-                                p("Confusion matrix will appear here.")
-                         )
-                     )
-                     
-            ),
+                        fluidRow(
+                            column(3,
+                               
+                               selectInput(inputId = "region", 
+                                           label = "Where is the school?", 
+                                           choices = c("East Midlands", "East of England",
+                                                       "London", "North East", "North West",
+                                                       "South East", "South West",
+                                                       "West Midlands", 
+                                                       "Yorkshire and the Humber")),
+                               
+                               selectInput(inputId = "schooltype", 
+                                           label = "What type is it?", 
+                                           choices = c("Academy", "Community", "Foundation",
+                                                       "Voluntary", "Other")),
+                               
+                               numericInput(inputId = "ks2aps",
+                                            label = "What is the KS2 APS?", 
+                                            min = 0, max = 40, value = 27)
+                               
+                                   ),
+                            column(4, offset = 1,
+                                   
+                               radioButtons(inputId = "religion", 
+                                            label = "What is the religious status?",
+                                            choices = list("Non-religious" = 1, "Religious" = 2),
+                                            selected = 1),
+                               
+                               br(),
+                               
+                               radioButtons(inputId = "singlesex", 
+                                            label = "What is the gender composition?",
+                                            choices = list("Mixed" = 1, "Single sex" = 2),
+                                            selected = 1)
+                               
+                                   ),
+                            column(4,
+                               sliderInput(inputId = "schoolsize",
+                                           label = "How many pupils are there?",
+                                           min = 50, max = 1250, value = 500, step = 100),
+                              
+                               
+                               selectInput(inputId = "algorithm", 
+                                           label = "Which classification algorithm?", 
+                                           choices = c("Classification Tree", 
+                                                       "SVM Radial Kernal",
+                                                       "Linear Discriminant Analysis", 
+                                                       "Naive Bayes")),
+                               
+                               submitButton("Submit"))
+                                   )
+                        )
+   
+                   ), 
         
         # Features tab title               
         tabPanel("Feature Descriptions",
