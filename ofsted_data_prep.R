@@ -135,5 +135,13 @@ schools_imputed <- predict(object = imputeObj, newdata = subset(schools, select 
 # bring the dataset back together                   
 schools <- as.data.frame(cbind(schools_imputed, schools_notimputed))
 
+# a few minor tweaks
+
+# remove the ks4aps predictor
+schools$ks4aps <- NULL
+
+# make the ofstedgrade variable ordered
+schools$ofstedgrade <- ordered(schools$ofstedgrade)
+
 # save the final file used for the ofsted prediction app
-save(schools, file = "data/schools.RData")
+save(schools, file = "Ofsted_App/data/schools.RData")
