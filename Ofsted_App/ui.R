@@ -5,6 +5,7 @@
 library(shiny)
 library(knitr)
 
+
 # Set up a UI for the Ofsted predictor classifier
 shinyUI(navbarPage("",
                    
@@ -17,8 +18,11 @@ shinyUI(navbarPage("",
                     # Fluidpage with controls for algorithm selection and values
                     fluidPage(
                         
-                        #plotOutput(),
-                        h4("Plot to follow here"),
+                        h2("Results"),
+                        tableOutput("table"),
+                        verbatimTextOutput("results"),
+                        #plotOutput("predplot"),
+                        
                         
                         hr(),
                         
@@ -33,10 +37,10 @@ shinyUI(navbarPage("",
                                                        "West Midlands", 
                                                        "Yorkshire and the Humber")),
                                
-                               selectInput(inputId = "schooltype", 
+                               selectInput(inputId = "instype", 
                                            label = "What type is it?", 
                                            choices = c("Academy", "Community", "Foundation",
-                                                       "Voluntary", "Other")),
+                                                        "Other", "Voluntary")),
                                
                                numericInput(inputId = "ks2aps",
                                             label = "What is the KS2 APS?", 
@@ -45,21 +49,21 @@ shinyUI(navbarPage("",
                                    ),
                             column(4, offset = 1,
                                    
-                               radioButtons(inputId = "religion", 
+                               radioButtons(inputId = "reldenom", 
                                             label = "What is the religious status?",
-                                            choices = list("Non-religious" = 1, "Religious" = 2),
-                                            selected = 1),
+                                            choices = c("Non-religious" = "Non-religious", "Religious" = "Religious"),
+                                            selected = "Non-religious"),
                                
                                br(),
                                
-                               radioButtons(inputId = "singlesex", 
+                               radioButtons(inputId = "egender", 
                                             label = "What is the gender composition?",
-                                            choices = list("Mixed" = 1, "Single sex" = 2),
-                                            selected = 1)
+                                            choices = c("Mixed" = "Mixed", "Single-sex" = "Single-sex"),
+                                            selected = "Mixed")
                                
                                    ),
                             column(4,
-                               sliderInput(inputId = "schoolsize",
+                               sliderInput(inputId = "totpups",
                                            label = "How many pupils are there?",
                                            min = 50, max = 1250, value = 500, step = 100),
                               
@@ -71,7 +75,7 @@ shinyUI(navbarPage("",
                                                        "Linear Discriminant Analysis", 
                                                        "Naive Bayes")),
                                
-                               submitButton("Submit"))
+                               actionButton("go","Predict"))
                                    )
                         )
    

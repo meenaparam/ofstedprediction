@@ -106,7 +106,7 @@ ks4$TTAPSCP_PTQ_EE[ks4$TTAPSCP_PTQ_EE == "SUPP"] <- NA
 ks4$KS4APS <- as.numeric(ks4$TTAPSCP_PTQ_EE)
 ks4$TTAPSCP_PTQ_EE <- NULL
 
-# Merge the myosfted df to the ks4 df
+# Merge the myofsted df to the ks4 df
 schools <- dplyr::inner_join(x = ks4, y = myofsted, by = c("URN" = "urn"))
 
 # Drop the laestab column
@@ -122,26 +122,25 @@ schools$totpups <- as.integer(schools$totpups)
 # Now the data is merged, drop the urn column
 schools$urn <- NULL
 
-## Data prep complete - now set up imputed dataset for missing vars
-library(caret)
-
-# separate the outcome and factor variables in training before imputation
-schools_notimputed <- subset(schools, select = c(reldenom, egender, region, instype, ofstedgrade))
-
-# impute missing data
-imputeObj <- preProcess(x = subset(schools, select = c(ks2aps, ks4aps, totpups)), method = "knnImpute")
-schools_imputed <- predict(object = imputeObj, newdata = subset(schools, select = c(ks2aps, ks4aps, totpups)))
-
-# bring the dataset back together                   
-schools <- as.data.frame(cbind(schools_imputed, schools_notimputed))
-
-# a few minor tweaks
-
 # remove the ks4aps predictor
 schools$ks4aps <- NULL
 
-# make the ofstedgrade variable ordered
-schools$ofstedgrade <- ordered(schools$ofstedgrade)
+# ## Data prep complete - now set up imputed dataset for missing vars
+# library(caret)
+# 
+# # separate the outcome and factor variables in training before imputation
+# schools_notimputed <- subset(schools, select = c(reldenom, egender, region, instype, ofstedgrade))
+# 
+# # impute missing data
+# imputeObj <- preProcess(x = subset(schools, select = c(ks2aps, ks4aps, totpups)), method = "knnImpute")
+# schools_imputed <- predict(object = imputeObj, newdata = subset(schools, select = c(ks2aps, ks4aps, totpups)))
+# 
+# # bring the dataset back together                   
+# schools <- as.data.frame(cbind(schools_imputed, schools_notimputed))
 
 # save the final file used for the ofsted prediction app
 save(schools, file = "Ofsted_App/data/schools.RData")
+write.csv(x = schools, file = "Ofsted_App/schools.csv", row.names = FALSE)
+
+# clear workspace
+rm(list = ls())
