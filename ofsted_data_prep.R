@@ -117,3 +117,4 @@ schools$region <- as.factor(schools$region)
 schools$totpups <- as.integer(schools$totpups)
 
 # Data prep complete - use the schools dataset in the ofsted prediction app
+save(schools, file = "schools.RData")
