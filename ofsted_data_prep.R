@@ -4,6 +4,9 @@
 
 ## Data comes from the DfE statistics site downloaded on 04/03/16 ##
 
+# Set working directory
+setwd("~/GitHub/Ofsted_Prediction")
+
 # Download the latest official Ofsted maintained schools statisics release - Sep 2014 to Aug 2015
 ofstedurl <- "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/483703/School_inspection_data_provisional_2.xlsx"
 
@@ -115,6 +118,7 @@ colnames(schools) <- lapply(colnames(schools), function(x) tolower(x))
 # Fix the region and totpups column classes
 schools$region <- as.factor(schools$region)
 schools$totpups <- as.integer(schools$totpups)
+schools$urn <- as.factor(schools$urn)
 
 # Data prep complete - use the schools dataset in the ofsted prediction app
 save(schools, file = "Ofsted_App/data/schools.RData")
