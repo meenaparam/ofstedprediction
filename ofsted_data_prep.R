@@ -118,7 +118,22 @@ colnames(schools) <- lapply(colnames(schools), function(x) tolower(x))
 # Fix the region and totpups column classes
 schools$region <- as.factor(schools$region)
 schools$totpups <- as.integer(schools$totpups)
-schools$urn <- as.factor(schools$urn)
 
-# Data prep complete - use the schools dataset in the ofsted prediction app
-save(schools, file = "Ofsted_App/data/schools.RData")
+# Now the data is merged, drop the urn column
+schools$urn <- NULL
+
+## Data prep complete - now set up imputed dataset for missing vars
+library(caret)
+
+# separate the outcome and factor variables in training before imputation
+schools_notimputed <- subset(schools, select = c(reldenom, egender, region, instype, ofstedgrade))
+
+# impute missing data
+imputeObj <- preProcess(x = subset(schools, select = c(ks2aps, ks4aps, totpups)), method = "knnImpute")
+schools_imputed <- predict(object = imputeObj, newdata = subset(schools, select = c(ks2aps, ks4aps, totpups)))
+
+# bring the dataset back together                   
+schools <- as.data.frame(cbind(schools_imputed, schools_notimputed))
+
+# save the final file used for the ofsted prediction app
+save(schools, file = "data/schools.RData")
