@@ -139,7 +139,7 @@ schools$ks4aps <- NULL
 # schools <- as.data.frame(cbind(schools_imputed, schools_notimputed))
 
 # save the final file used for the ofsted prediction app
-save(schools, file = "Ofsted_App/data/schools.RData")
+saveRDS(object = schools, file = "Ofsted_App/schools.RDS")
 write.csv(x = schools, file = "Ofsted_App/schools.csv", row.names = FALSE)
 
 # clear workspace

@@ -6,17 +6,15 @@
 library(shiny)
 library(knitr)
 library(caret)
-library(dplyr)
 library(tidyr)
 library(ggplot2)
-library(plotly)
 library(scales)
 
 # Set working directory for testing
-setwd("~/GitHub/Ofsted_Prediction/Ofsted_App")
+# setwd("~/GitHub/Ofsted_Prediction/Ofsted_App")
 
 # Load up the ofsted data
-schools <- read.csv("schools.csv")
+schools <- readRDS(file = "schools.RDS")
 
 # Load model objects
 modellda <- readRDS(file = "modellda.RDS")
@@ -30,11 +28,17 @@ shinyServer(function(input, output) {
         observe({
 
             # apply selected classification algorithm
-            if(input$algorithm=="Classification Tree") {
+            if(input$algorithm=="Linear Discriminant Analysis"){
                 
                 # Reactively update the prediction dataset!
                 values <- reactiveValues()
-                values$df <- userdf
+                values$df <- data.frame(ks2aps = NA,
+                                        totpups = NA,
+                                        reldenom = NA,
+                                        egender = NA,
+                                        region = NA,
+                                        instype = NA
+                                        )
                 newEntry <- observe({
                     values$df$ks2aps <- input$ks2aps
                     values$df$totpups <- input$totpups
@@ -45,50 +49,31 @@ shinyServer(function(input, output) {
                     
                 })
                 
-                output$table <- renderTable({data.frame(values$df)})
-                
-                output$results <- renderPrint({
-                    mypred <- reactive(predict(modelrpart, newdata = data.frame(values$df), type = "prob"))
-                    print(mypred)})
-
-                # make and print the plot
-                output$predplot <- renderPlot({
-                    mypred <- reactive(predict(modelrpart, newdata = data.frame(values$df), type = "prob"))
-                    # reshape the data into long format
-                    mypred1 <- gather(data = mypred[1,], key = ofstedgrade, value = probability, 1:4)
-                    gg <- ggplot(data = mypred1, aes(x = factor(ofstedgrade), y = probability, fill = factor(ofstedgrade))) + geom_bar(stat = "identity") + guides(fill = FALSE) + scale_x_discrete(limits = c("Outstanding", "Good", "Requires Improvement", "Inadequate")) + scale_y_continuous(labels=percent) + geom_text(aes(label = paste0(round(probability*100, 0),"%")), position = position_dodge(0.9), vjust = 2, size = 3) + xlab("") + ylab("Probability")
-                    print(gg)
-                
-                
-                })
-            } else if(input$algorithm=="Linear Discriminant Analysis"){
-                
-                # Reactively update the prediction dataset!
-                values <- reactiveValues()
-                values$df <- userdf
-                newEntry <- observe({
-                    values$df$ks2aps <- input$ks2aps
-                    values$df$totpups <- input$totpups
-                    values$df$reldenom <- input$reldenom
-                    values$df$egender <- input$egender
-                    values$df$region <- input$region
-                    values$df$instype <- input$instype
+                    # make and print the plot
+                    output$predplot <- renderPlot({
                     
-                })
-                
-                output$table <- renderTable({data.frame(values$df)})
-                
-                output$results <- renderPrint({
                     mypred <- reactive(predict(modellda, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
+                    mypred1 <- tidyr::gather(data = finalpred, key = ofstedgrade, value = probability)
+                    
+                     gg <- ggplot(data = mypred1, aes(x = factor(ofstedgrade), y = probability, fill = factor(ofstedgrade))) + geom_bar(stat = "identity")  + scale_x_discrete(limits = c("Outstanding", "Good", "Requires Improvement", "Inadequate")) + scale_y_continuous(labels=percent) + geom_text(aes(label = paste0(round(probability*100, 0),"%")), position = position_dodge(0.9), vjust = 2, size = 4) + xlab("") + ylab("Probability") + guides(fill=FALSE) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"))
+                    
+                    print(gg)
+                    
                 })
             } else if(input$algorithm=="Naive Bayes"){
-                
+
                 # Reactively update the prediction dataset!
                 values <- reactiveValues()
-                values$df <- userdf
+                values$df <- data.frame(ks2aps = NA,
+                                        totpups = NA,
+                                        reldenom = NA,
+                                        egender = NA,
+                                        region = NA,
+                                        instype = NA
+                )
                 newEntry <- observe({
                     values$df$ks2aps <- input$ks2aps
                     values$df$totpups <- input$totpups
@@ -99,19 +84,31 @@ shinyServer(function(input, output) {
                     
                 })
                 
-                output$table <- renderTable({data.frame(values$df)})
-                
-                output$results <- renderPrint({
-                    mypred <- reactive(predict(modelnb, newdata = data.frame(values$df), type = "prob"))
+                # make and print the plot
+                output$predplot <- renderPlot({
+                    
+                    mypred <- reactive(predict(modellda, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
+                    mypred1 <- tidyr::gather(data = finalpred, key = ofstedgrade, value = probability)
+                    
+                    gg <- ggplot(data = mypred1, aes(x = factor(ofstedgrade), y = probability, fill = factor(ofstedgrade))) + geom_bar(stat = "identity")  + scale_x_discrete(limits = c("Outstanding", "Good", "Requires Improvement", "Inadequate")) + scale_y_continuous(labels=percent) + geom_text(aes(label = paste0(round(probability*100, 0),"%")), position = position_dodge(0.9), vjust = 2, size = 4) + xlab("") + ylab("Probability") + guides(fill=FALSE) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"))
+                    
+                    print(gg)
+
                 })
             } else if(input$algorithm=="Random Forest"){
-                
+
                 # Reactively update the prediction dataset!
                 values <- reactiveValues()
-                values$df <- userdf
+                values$df <- data.frame(ks2aps = NA,
+                                        totpups = NA,
+                                        reldenom = NA,
+                                        egender = NA,
+                                        region = NA,
+                                        instype = NA
+                )
                 newEntry <- observe({
                     values$df$ks2aps <- input$ks2aps
                     values$df$totpups <- input$totpups
@@ -122,19 +119,32 @@ shinyServer(function(input, output) {
                     
                 })
                 
-                output$table <- renderTable({data.frame(values$df)})
-                
-                output$results <- renderPrint({
-                    mypred <- reactive(predict(modelrf, newdata = data.frame(values$df), type = "prob"))
+                # make and print the plot
+                output$predplot <- renderPlot({
+                    
+                    mypred <- reactive(predict(modellda, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
+                    mypred1 <- tidyr::gather(data = finalpred, key = ofstedgrade, value = probability)
+                    
+                    gg <- ggplot(data = mypred1, aes(x = factor(ofstedgrade), y = probability, fill = factor(ofstedgrade))) + geom_bar(stat = "identity")  + scale_x_discrete(limits = c("Outstanding", "Good", "Requires Improvement", "Inadequate")) + scale_y_continuous(labels=percent) + geom_text(aes(label = paste0(round(probability*100, 0),"%")), position = position_dodge(0.9), vjust = 2, size = 4) + xlab("") + ylab("Probability") + guides(fill=FALSE) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"))
+                    
+                    print(gg)
+
                 })
+                
             } else if(input$algorithm=="K-Nearest Neighbours"){
-                
+
                 # Reactively update the prediction dataset!
                 values <- reactiveValues()
-                values$df <- userdf
+                values$df <- data.frame(ks2aps = NA,
+                                        totpups = NA,
+                                        reldenom = NA,
+                                        egender = NA,
+                                        region = NA,
+                                        instype = NA
+                )
                 newEntry <- observe({
                     values$df$ks2aps <- input$ks2aps
                     values$df$totpups <- input$totpups
@@ -145,13 +155,19 @@ shinyServer(function(input, output) {
                     
                 })
                 
-                output$table <- renderTable({data.frame(values$df)})
-                
-                output$results <- renderPrint({
-                    mypred <- reactive(predict(modelknn, newdata = data.frame(values$df), type = "prob"))
+                # make and print the plot
+                output$predplot <- renderPlot({
+                    
+                    mypred <- reactive(predict(modellda, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
+                    mypred1 <- tidyr::gather(data = finalpred, key = ofstedgrade, value = probability)
+                    
+                    gg <- ggplot(data = mypred1, aes(x = factor(ofstedgrade), y = probability, fill = factor(ofstedgrade))) + geom_bar(stat = "identity")  + scale_x_discrete(limits = c("Outstanding", "Good", "Requires Improvement", "Inadequate")) + scale_y_continuous(labels=percent) + geom_text(aes(label = paste0(round(probability*100, 0),"%")), position = position_dodge(0.9), vjust = 2, size = 4) + xlab("") + ylab("Probability") + guides(fill=FALSE) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"))
+                    
+                    print(gg)
+
                 })
             }else{
                 output$results <- renderPrint("Error no Algorithm selected")

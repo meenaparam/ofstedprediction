@@ -4,8 +4,6 @@
 
 library(shiny)
 library(knitr)
-library(plotly)
-
 
 # Set up a UI for the Ofsted predictor classifier
 shinyUI(navbarPage("",
@@ -18,14 +16,7 @@ shinyUI(navbarPage("",
                             
                     # Fluidpage with controls for algorithm selection and values
                     fluidPage(
-                        
-                        h2("Results"),
-                        #tableOutput("table"),
-                        verbatimTextOutput("results"),
-                        plotOutput("predplot"),
-                        
-                        
-                        hr(),
+
                         
                         fluidRow(
                             column(3,
@@ -67,8 +58,8 @@ shinyUI(navbarPage("",
                             column(4,
                                    selectInput(inputId = "algorithm", 
                                                label = "Which classification algorithm?", 
-                                               choices = c("Random Forest", 
-                                                           "Linear Discriminant Analysis", 
+                                               choices = c( "Linear Discriminant Analysis", 
+                                                            "Random Forest",
                                                            "Naive Bayes",
                                                            "K-Nearest Neighbours")),
                                    br(),
@@ -77,7 +68,13 @@ shinyUI(navbarPage("",
                                            min = 50, max = 1250, value = 500, step = 100)
                               
                                         )
-                                   )
+                                   ),
+                        hr(),
+                        h5("Results"),
+                        plotOutput("predplot")
+                        
+                        
+
                         )
    
                    ), 
