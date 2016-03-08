@@ -87,7 +87,7 @@ shinyServer(function(input, output) {
                 # make and print the plot
                 output$predplot <- renderPlot({
                     
-                    mypred <- reactive(predict(modellda, newdata = data.frame(values$df), type = "prob"))
+                    mypred <- reactive(predict(modelnb, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
@@ -122,7 +122,7 @@ shinyServer(function(input, output) {
                 # make and print the plot
                 output$predplot <- renderPlot({
                     
-                    mypred <- reactive(predict(modellda, newdata = data.frame(values$df), type = "prob"))
+                    mypred <- reactive(predict(modelrf, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
@@ -158,7 +158,7 @@ shinyServer(function(input, output) {
                 # make and print the plot
                 output$predplot <- renderPlot({
                     
-                    mypred <- reactive(predict(modellda, newdata = data.frame(values$df), type = "prob"))
+                    mypred <- reactive(predict(modelknn, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     

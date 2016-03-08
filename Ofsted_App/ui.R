@@ -12,10 +12,16 @@ shinyUI(navbarPage("",
             tabPanel("Ofsted predictor",
                     
             # Application title
-            titlePanel("Predicting Ofsted grades"),
+            #titlePanel("Predicting Ofsted grades"),
                             
                     # Fluidpage with controls for algorithm selection and values
                     fluidPage(
+                        
+                        h4("Predicting Ofsted grades"),
+                        p("This app estimates the probability of a secondary school being awarded a certain grade after an inspection by Ofsted. To use it, simply select the characteristics of the school you want to predict for and then choose a prediction algorithm. The probabilites are shown in the chart below."),
+                        
+                        hr(),
+                        plotOutput("predplot", height = "300px"),
 
                         
                         fluidRow(
@@ -47,7 +53,6 @@ shinyUI(navbarPage("",
                                             selected = "Non-religious"),
                                
                                br(),
-                               br(),
                                
                                radioButtons(inputId = "egender", 
                                             label = "What is the gender composition?",
@@ -60,20 +65,15 @@ shinyUI(navbarPage("",
                                                label = "Which classification algorithm?", 
                                                choices = c( "Linear Discriminant Analysis", 
                                                             "Random Forest",
-                                                           "Naive Bayes",
-                                                           "K-Nearest Neighbours")),
+                                                            "Naive Bayes",
+                                                            "K-Nearest Neighbours")), 
                                    br(),
                                    sliderInput(inputId = "totpups",
-                                           label = "How many pupils are there?",
-                                           min = 50, max = 1250, value = 500, step = 100)
-                              
+                                               label = "How many pupils are there?",
+                                               min = 50, max = 1250, value = 500, step = 100) 
+
                                         )
-                                   ),
-                        hr(),
-                        h5("Results"),
-                        plotOutput("predplot")
-                        
-                        
+                                   )
 
                         )
    
