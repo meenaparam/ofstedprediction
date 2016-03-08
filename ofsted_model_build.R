@@ -9,10 +9,10 @@ library(parallel)
 library(doParallel)
 
 # Set working directory for testing
-setwd("~/GitHub/Ofsted_Prediction/Ofsted_App")
+setwd("~/GitHub/Ofsted_Prediction/Ofsted_App/data")
 
 # load up the ofsted data
-schools <- read.csv("schools.csv")
+schools <- readRDS("../schools.RDS")
 
 # make an empty dataframe for the user
 userdf <- schools[1,]
@@ -81,7 +81,7 @@ modelrf <- train(ofstedgrade ~ ., data = training, method = "rf", prox = T, trCo
 set.seed(1234)
 predrf <- predict(modelrf, newdata = testing)
 cmrf <- confusionMatrix(predrf, testing$ofstedgrade)
-saveRDS(object = modelgbm, file = "modelrf.RDS")
+saveRDS(object = modelrf, file = "modelrf.RDS")
 
 # try a knn
 set.seed(13489)
@@ -89,7 +89,7 @@ modelknn <- train(ofstedgrade ~ ., data = training, method = "knn", trControl = 
 set.seed(1234)
 predknn <- predict(modelknn, newdata = testing)
 cmknn <- confusionMatrix(predknn, testing$ofstedgrade)
-saveRDS(object = modelgbm, file = "modelknn.RDS")
+saveRDS(object = modelknn, file = "modelknn.RDS")
 
 # try a nnet
 set.seed(13489)
@@ -97,7 +97,7 @@ modelnnet <- train(ofstedgrade ~ ., data = training, method = "nnet", trControl 
 set.seed(1234)
 prednnet <- predict(modelnnet, newdata = testing)
 cmnnet <- confusionMatrix(prednnet, testing$ofstedgrade)
-saveRDS(object = modelgbm, file = "modelnnet.RDS")
+saveRDS(object = modelnnet, file = "modelnnet.RDS")
 
 # stop the parallel processing
 stopCluster(cluster)
