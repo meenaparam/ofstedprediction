@@ -38,5 +38,6 @@ You can find out more about building applications with Shiny here: http://shiny.
 
 I referred to [miningthedetails' shiny app ](https://miningthedetails.shinyapps.io/knn-dashboard-shiny-plotly/) and [hack-r's server.R code](https://github.com/hack-r/coursera_shiny/blob/master/server.R) code to help me build my app.
 
+
 Finally, this app was partly inspired by that created by [Trevor Burton](https://www.jtb-education.co.uk/ofstedpredictor.php). My app is an extension of Burton's as it uses a more recent dataset, allows the user to choose a classification algorithm, and employs more variables in the prediction. To reiterate Burton:
 >"I've only included the things you don't have any control over, so you can see how wrong it is that these should be correlated with Ofsted judgements."
