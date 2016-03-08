@@ -4,6 +4,7 @@
 
 library(shiny)
 library(knitr)
+library(plotly)
 
 
 # Set up a UI for the Ofsted predictor classifier
@@ -19,9 +20,9 @@ shinyUI(navbarPage("",
                     fluidPage(
                         
                         h2("Results"),
-                        tableOutput("table"),
+                        #tableOutput("table"),
                         verbatimTextOutput("results"),
-                        #plotOutput("predplot"),
+                        plotOutput("predplot"),
                         
                         
                         hr(),
@@ -51,31 +52,31 @@ shinyUI(navbarPage("",
                                    
                                radioButtons(inputId = "reldenom", 
                                             label = "What is the religious status?",
-                                            choices = c("Non-religious" = "Non-religious", "Religious" = "Religious"),
+                                            choices = c("Non-religious", "Religious"),
                                             selected = "Non-religious"),
                                
+                               br(),
                                br(),
                                
                                radioButtons(inputId = "egender", 
                                             label = "What is the gender composition?",
-                                            choices = c("Mixed" = "Mixed", "Single-sex" = "Single-sex"),
+                                            choices = c("Mixed", "Single-sex"),
                                             selected = "Mixed")
                                
                                    ),
                             column(4,
-                               sliderInput(inputId = "totpups",
+                                   selectInput(inputId = "algorithm", 
+                                               label = "Which classification algorithm?", 
+                                               choices = c("Random Forest", 
+                                                           "Linear Discriminant Analysis", 
+                                                           "Naive Bayes",
+                                                           "K-Nearest Neighbours")),
+                                   br(),
+                                   sliderInput(inputId = "totpups",
                                            label = "How many pupils are there?",
-                                           min = 50, max = 1250, value = 500, step = 100),
+                                           min = 50, max = 1250, value = 500, step = 100)
                               
-                               
-                               selectInput(inputId = "algorithm", 
-                                           label = "Which classification algorithm?", 
-                                           choices = c("Classification Tree", 
-                                                       "SVM Radial Kernal",
-                                                       "Linear Discriminant Analysis", 
-                                                       "Naive Bayes")),
-                               
-                               actionButton("go","Predict"))
+                                        )
                                    )
                         )
    
