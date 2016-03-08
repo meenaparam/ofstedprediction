@@ -9,6 +9,8 @@ library(caret)
 library(tidyr)
 library(ggplot2)
 library(scales)
+library(randomForest)
+library(klaR)
 
 # Set working directory for testing
 # setwd("~/GitHub/Ofsted_Prediction/Ofsted_App")
@@ -17,10 +19,10 @@ library(scales)
 schools <- readRDS(file = "schools.RDS")
 
 # Load model objects
-modellda <- readRDS(file = "modellda.RDS")
-modelnb <- readRDS(file = "modelnb.RDS")
-modelrf <- readRDS(file = "modelrf.RDS")
-modelknn <- readRDS(file = "modelknn.RDS")
+modellda <- readRDS(file = "models/modellda.RDS")
+modelnb <- readRDS(file = "models/modelnb.RDS")
+modelrf <- readRDS(file = "models/modelrf.RDS")
+modelknn <- readRDS(file = "models/modelknn.RDS")
 
 # Set up the server logic for the Ofsted predictor classifier
 shinyServer(function(input, output) {
@@ -52,7 +54,7 @@ shinyServer(function(input, output) {
                     # make and print the plot
                     output$predplot <- renderPlot({
                     
-                    mypred <- reactive(predict(modellda, newdata = data.frame(values$df), type = "prob"))
+                    mypred <- reactive(predict.train(modellda, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
@@ -87,7 +89,7 @@ shinyServer(function(input, output) {
                 # make and print the plot
                 output$predplot <- renderPlot({
                     
-                    mypred <- reactive(predict(modelnb, newdata = data.frame(values$df), type = "prob"))
+                    mypred <- reactive(predict.train(modelnb, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
@@ -99,7 +101,7 @@ shinyServer(function(input, output) {
 
                 })
             } else if(input$algorithm=="Random Forest"){
-
+                
                 # Reactively update the prediction dataset!
                 values <- reactiveValues()
                 values$df <- data.frame(ks2aps = NA,
@@ -122,7 +124,7 @@ shinyServer(function(input, output) {
                 # make and print the plot
                 output$predplot <- renderPlot({
                     
-                    mypred <- reactive(predict(modelrf, newdata = data.frame(values$df), type = "prob"))
+                    mypred <- reactive(predict.train(modelrf, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
@@ -158,7 +160,7 @@ shinyServer(function(input, output) {
                 # make and print the plot
                 output$predplot <- renderPlot({
                     
-                    mypred <- reactive(predict(modelknn, newdata = data.frame(values$df), type = "prob"))
+                    mypred <- reactive(predict.train(modelknn, newdata = data.frame(values$df), type = "prob"))
                     finalpred <- mypred()
                     print(finalpred)
                     
