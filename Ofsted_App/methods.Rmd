@@ -30,7 +30,7 @@ The specific algorithms:
 
 For more information on these methods, see the [`caret` package's GitHub page](http://topepo.github.io/caret/index.html).
 
-Note that none of the algorithms employed achieved an accuracy rate of over 57%. This indicates that other variables also contribute to the ultimate Ofsted grade schools receive and that future tuning and refining of the models is needed. This is particularly noticeable with the `naiveBayes` model, which tends to classify almost all input schools as Good. However, the variables and models included here do a decent job of explaining a reasonable amount of the variation in gradings. Three other algorithms were implemented but not used in the app because of lower accuracy rates than the four ultimately chosen.
+The best performer was the `lda` model. However, none of the algorithms employed achieved an out-of-sample error rate of under 40%. This indicates that other variables are needed to make better predictions and that further tuning and refining of the models is needed. However, the variables and models included here do a decent job of explaining a reasonable amount of the variation in gradings. Three other algorithms were also implemented but not used in the app because of lower accuracy rates than the four ultimately chosen.
 
 ### Credits
 
