@@ -22,6 +22,8 @@ shinyUI(navbarPage("",
                         
                         hr(),
                         plotOutput("predplot", height = "300px"),
+                        #rchart showOutput - not used for now
+                        #showOutput("myChart", "polycharts"),
 
                         
                         fluidRow(
