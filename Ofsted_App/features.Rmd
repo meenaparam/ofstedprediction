@@ -22,3 +22,4 @@ There are six predictor variables and one outcome variable in the dataset used f
 - *Total pupils*: this is the number of pupils enrolled at the school.
 
 - *Ofsted grade*: this is the overall grade given to schools by the Office for Standards in Education, Children's Services and Skills [(Ofsted)](https://www.gov.uk/government/organisations/ofsted/about) following a school inspection. Four grades are possible: Outstanding, Good, Requires Improvement and Inadequate. This is the outcome variable.
+
