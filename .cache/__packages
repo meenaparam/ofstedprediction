@@ -1,0 +1,13 @@
+base
+shiny
+knitr
+lattice
+ggplot2
+caret
+tidyr
+scales
+randomForest
+MASS
+klaR
+slidify
+slidifyLibraries

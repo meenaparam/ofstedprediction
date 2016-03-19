@@ -1,0 +1,10 @@
+name: Ofsted_App
+account: meenaparam
+server: shinyapps.io
+appId: 87902
+bundleId: 398919
+url: https://meenaparam.shinyapps.io/Ofsted_App/
+when: 1458409244.61704
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: models/modelgbm.RDS|models/modelnnet.RDS|models/modelrpart.RDS
